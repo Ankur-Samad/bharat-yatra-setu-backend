@@ -1,0 +1,17 @@
+package bharat_yatra_setu_backend.repository;
+
+import bharat_yatra_setu_backend.entity.Availability;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface AvailabilityRepository
+        extends JpaRepository<Availability, Long> {
+
+    List<Availability> findByExperienceId(String experienceId);
+
+    List<Availability> findByExperienceIdAndDate(
+            String experienceId,
+            String date
+    );
+}

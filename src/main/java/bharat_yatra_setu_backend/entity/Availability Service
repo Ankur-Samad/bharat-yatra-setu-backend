@@ -1,0 +1,75 @@
+package bharat_yatra_setu_backend.service;
+
+import bharat_yatra_setu_backend.entity.Availability;
+import bharat_yatra_setu_backend.repository.AvailabilityRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class AvailabilityService {
+
+    private final AvailabilityRepository availabilityRepository;
+
+    public AvailabilityService(AvailabilityRepository availabilityRepository) {
+        this.availabilityRepository = availabilityRepository;
+    }
+
+    public List<Availability> getAll() {
+        return availabilityRepository.findAll();
+    }
+
+    public List<Availability> getByExperience(String experienceId) {
+        return availabilityRepository.findByExperienceId(experienceId);
+    }
+
+    public List<Availability> getByExperienceAndDate(
+            String experienceId,
+            String date
+    ) {
+        return availabilityRepository
+                .findByExperienceIdAndDate(experienceId, date);
+    }
+
+    public Availability create(Availability availability) {
+        return availabilityRepository.save(availability);
+    }
+
+    public Availability update(
+            Long id,
+            Availability updatedAvailability
+    ) {
+        Availability existing =
+                availabilityRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Availability not found"
+                                )
+                        );
+
+        existing.setExperienceId(
+                updatedAvailability.getExperienceId()
+        );
+        existing.setDate(
+                updatedAvailability.getDate()
+        );
+        existing.setStartTime(
+                updatedAvailability.getStartTime()
+        );
+        existing.setEndTime(
+                updatedAvailability.getEndTime()
+        );
+        existing.setAvailableSlots(
+                updatedAvailability.getAvailableSlots()
+        );
+        existing.setStatus(
+                updatedAvailability.getStatus()
+        );
+
+        return availabilityRepository.save(existing);
+    }
+
+    public void delete(Long id) {
+        availabilityRepository.deleteById(id);
+    }
+}

@@ -1,0 +1,82 @@
+package bharat_yatra_setu_backend.controller;
+
+import bharat_yatra_setu_backend.entity.Availability;
+import bharat_yatra_setu_backend.service.AvailabilityService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/availability")
+@CrossOrigin(origins = "*")
+public class AvailabilityController {
+
+    private final AvailabilityService availabilityService;
+
+    public AvailabilityController(AvailabilityService availabilityService) {
+        this.availabilityService = availabilityService;
+    }
+
+    // Get all availability
+    @GetMapping
+    public ResponseEntity<List<Availability>> getAll() {
+        return ResponseEntity.ok(
+                availabilityService.getAll()
+        );
+    }
+
+    // Get availability by experience
+    @GetMapping("/experience/{experienceId}")
+    public ResponseEntity<List<Availability>> getByExperience(
+            @PathVariable String experienceId
+    ) {
+        return ResponseEntity.ok(
+                availabilityService.getByExperience(experienceId)
+        );
+    }
+
+    // Get availability by experience and date
+    @GetMapping("/experience/{experienceId}/date/{date}")
+    public ResponseEntity<List<Availability>> getByExperienceAndDate(
+            @PathVariable String experienceId,
+            @PathVariable String date
+    ) {
+        return ResponseEntity.ok(
+                availabilityService.getByExperienceAndDate(
+                        experienceId,
+                        date
+                )
+        );
+    }
+
+    // Create availability
+    @PostMapping
+    public ResponseEntity<Availability> create(
+            @RequestBody Availability availability
+    ) {
+        return ResponseEntity.ok(
+                availabilityService.create(availability)
+        );
+    }
+
+    // Update availability
+    @PutMapping("/{id}")
+    public ResponseEntity<Availability> update(
+            @PathVariable Long id,
+            @RequestBody Availability availability
+    ) {
+        return ResponseEntity.ok(
+                availabilityService.update(id, availability)
+        );
+    }
+
+    // Delete availability
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id
+    ) {
+        availabilityService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+}
